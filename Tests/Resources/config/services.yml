@@ -1,0 +1,13 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: true
+
+    RichId\CsvGeneratorBundle\Generator\CsvGeneratorInterface:
+        alias: RichId\CsvGeneratorBundle\Generator\CsvGenerator
+
+    RichId\CsvGeneratorBundle\Utility\PropertiesUtility: ~
+
+    RichId\CsvGeneratorBundle\Tests\Resources\Stub\CsvGeneratorStub:
+        decorates: RichId\CsvGeneratorBundle\Generator\CsvGenerator

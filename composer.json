@@ -1,0 +1,46 @@
+{
+    "name": "rich-id/csv-generator-bundle",
+    "description": "A csv bundle for Symfony 4.4",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "RichId",
+            "homepage": "https://www.rich-id.fr"
+        }
+    ],
+    "support": {
+        "email": "team-devs@rich-id.io",
+        "source": "https://github.com/rich-id/csv-generator-bundle",
+        "docs": "https://github.com/rich-id/csv-generator-bundle/blob/master/README.md",
+        "issues": "https://github.com/rich-id/csv-generator-bundle/issues"
+    },
+    "require": {
+        "php": ">=7.3",
+        "doctrine/orm": "^2.8",
+        "richcongress/bundle-toolbox": "*",
+        "symfony/http-foundation": "^4.4",
+        "symfony/serializer": "^4.4",
+        "symfony/translation": "^4.4"
+    },
+    "require-dev": {
+        "richcongress/test-suite": "^0.1",
+        "infection/infection": "^0.16.4",
+        "php-coveralls/php-coveralls": "^2.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "RichId\\CsvGeneratorBundle\\": ""
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "RichId\\CsvGeneratorBundle\\Tests\\": "Tests/"
+        }
+    },
+    "config": {
+        "bin-dir": "bin",
+        "discard-changes": true,
+        "sort-packages": true
+    }
+}

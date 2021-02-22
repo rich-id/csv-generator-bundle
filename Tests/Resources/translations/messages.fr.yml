@@ -1,0 +1,8 @@
+header_prefix.id: Identifiant
+header_prefix.name: Nom
+header_prefix.other: Autre information
+header_prefix.otherTitle: Autre Titre
+header_prefix.title: Titre
+
+my_content_translation_prefix.value1: Valeur 1
+my_content_translation_prefix.value2: Valeur 2
