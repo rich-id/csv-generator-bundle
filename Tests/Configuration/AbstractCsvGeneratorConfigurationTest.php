@@ -4,6 +4,7 @@ namespace RichId\CsvGeneratorBundle\Tests\Configuration;
 
 use RichCongress\TestTools\TestCase\TestCase;
 use RichId\CsvGeneratorBundle\Configuration\CsvGeneratorConfiguration;
+use RichId\CsvGeneratorBundle\Tests\Resources\Entity\DummyEntity;
 
 /**
  * Class AbstractCsvGeneratorConfigurationTest.
@@ -22,7 +23,10 @@ class AbstractCsvGeneratorConfigurationTest extends TestCase
             return '';
         };
 
-        $configuration = CsvGeneratorConfiguration::create('class_name', [])
+        $entity1 = DummyEntity::build(1, 'name', 'value1');
+        $entity2 = DummyEntity::build(2, 'name', 'value1');
+
+        $configuration = CsvGeneratorConfiguration::create('class_name', [$entity1, $entity2])
             ->setDelimiter('delimiter')
             ->setSerializationGroups(['group_1', 'group_2'])
             ->setHeaderTranslationPrefix('header_translation_prefix_')
@@ -35,5 +39,6 @@ class AbstractCsvGeneratorConfigurationTest extends TestCase
         $this->assertSame($callback, $configuration->getObjectTransformerCallback());
         $this->assertSame('delimiter', $configuration->getDelimiter());
         $this->assertFalse($configuration->isWithHeader());
+        $this->assertSame([$entity1, $entity2], $configuration->getObjects());
     }
 }

@@ -7,7 +7,7 @@ use Doctrine\ORM\QueryBuilder;
 use RichCongress\TestFramework\TestConfiguration\Annotation\TestConfig;
 use RichCongress\TestSuite\TestCase\TestCase;
 use RichId\CsvGeneratorBundle\Configuration\CsvGeneratorConfiguration;
-use RichId\CsvGeneratorBundle\Configuration\CsvPaginatedGeneratorConfiguration;
+use RichId\CsvGeneratorBundle\Configuration\CsvQueryBuilderGeneratorConfiguration;
 use RichId\CsvGeneratorBundle\Generator\CsvGeneratorInterface;
 use RichId\CsvGeneratorBundle\Tests\Resources\Entity\DummyEntity;
 use RichId\CsvGeneratorBundle\Tests\Resources\Entity\DummyOtherEntity;
@@ -51,7 +51,7 @@ class CsvGeneratorTest extends TestCase
 
     public function testGetContentWithPaginatedConfiguration(): void
     {
-        $configuration = CsvPaginatedGeneratorConfiguration::create(DummyEntity::class, $this->buildQueryBuilder(), 2);
+        $configuration = CsvQueryBuilderGeneratorConfiguration::create(DummyEntity::class, $this->buildQueryBuilder(), 2);
 
         $content = $this->generator->getContent($configuration);
 
@@ -70,7 +70,7 @@ class CsvGeneratorTest extends TestCase
 
     public function testGetContentWithPaginatedConfigurationWithoutHeader(): void
     {
-        $configuration = CsvPaginatedGeneratorConfiguration::create(DummyEntity::class, $this->buildQueryBuilder(), 2)
+        $configuration = CsvQueryBuilderGeneratorConfiguration::create(DummyEntity::class, $this->buildQueryBuilder(), 2)
             ->setWithHeader(false);
 
         $content = $this->generator->getContent($configuration);
@@ -90,7 +90,7 @@ class CsvGeneratorTest extends TestCase
 
     public function testGetContentWithPaginatedConfigurationWithSerializationGroups(): void
     {
-        $configuration = CsvPaginatedGeneratorConfiguration::create(DummyEntity::class, $this->buildQueryBuilder(), 2)
+        $configuration = CsvQueryBuilderGeneratorConfiguration::create(DummyEntity::class, $this->buildQueryBuilder(), 2)
             ->setSerializationGroups(['my_serialization_group']);
 
         $content = $this->generator->getContent($configuration);
@@ -110,7 +110,7 @@ class CsvGeneratorTest extends TestCase
 
     public function testGetContentWithPaginatedConfigurationWithCustomDelimiter(): void
     {
-        $configuration = CsvPaginatedGeneratorConfiguration::create(DummyEntity::class, $this->buildQueryBuilder(), 2)
+        $configuration = CsvQueryBuilderGeneratorConfiguration::create(DummyEntity::class, $this->buildQueryBuilder(), 2)
             ->setDelimiter("&");
 
         $content = $this->generator->getContent($configuration);
@@ -130,7 +130,7 @@ class CsvGeneratorTest extends TestCase
 
     public function testGetContentWithPaginatedConfigurationWithHeaderTranslationPefix(): void
     {
-        $configuration = CsvPaginatedGeneratorConfiguration::create(DummyEntity::class, $this->buildQueryBuilder(), 2)
+        $configuration = CsvQueryBuilderGeneratorConfiguration::create(DummyEntity::class, $this->buildQueryBuilder(), 2)
             ->setHeaderTranslationPrefix("header_prefix.");
 
         $content = $this->generator->getContent($configuration);
@@ -150,7 +150,7 @@ class CsvGeneratorTest extends TestCase
 
     public function testGetContentWithPaginatedConfigurationWithCallback(): void
     {
-        $configuration = CsvPaginatedGeneratorConfiguration::create(DummyOtherEntity::class, $this->buildQueryBuilder(), 2)
+        $configuration = CsvQueryBuilderGeneratorConfiguration::create(DummyOtherEntity::class, $this->buildQueryBuilder(), 2)
             ->setObjectTransformerCallback([DummyOtherEntity::class, 'buildFromDummyEntity']);
 
         $content = $this->generator->getContent($configuration);
@@ -171,7 +171,7 @@ class CsvGeneratorTest extends TestCase
 
     public function testStreamResponseWithPaginatedConfiguration(): void
     {
-        $configuration = CsvPaginatedGeneratorConfiguration::create(DummyEntity::class, $this->buildQueryBuilder(), 2);
+        $configuration = CsvQueryBuilderGeneratorConfiguration::create(DummyEntity::class, $this->buildQueryBuilder(), 2);
 
         $response = $this->generator->streamResponse($configuration, 'my_file');
         $response->sendContent();
@@ -194,7 +194,7 @@ class CsvGeneratorTest extends TestCase
 
     public function testStreamResponseWithPaginatedConfigurationWithoutHeader(): void
     {
-        $configuration = CsvPaginatedGeneratorConfiguration::create(DummyEntity::class, $this->buildQueryBuilder(), 2)
+        $configuration = CsvQueryBuilderGeneratorConfiguration::create(DummyEntity::class, $this->buildQueryBuilder(), 2)
             ->setWithHeader(false);
 
         $response = $this->generator->streamResponse($configuration, 'my_file');
@@ -218,7 +218,7 @@ class CsvGeneratorTest extends TestCase
 
     public function testStreamResponseWithPaginatedConfigurationWithSerializationGroups(): void
     {
-        $configuration = CsvPaginatedGeneratorConfiguration::create(DummyEntity::class, $this->buildQueryBuilder(), 2)
+        $configuration = CsvQueryBuilderGeneratorConfiguration::create(DummyEntity::class, $this->buildQueryBuilder(), 2)
             ->setSerializationGroups(['my_serialization_group']);
 
         $response = $this->generator->streamResponse($configuration, 'my_file');
@@ -242,7 +242,7 @@ class CsvGeneratorTest extends TestCase
 
     public function testStreamResponseWithPaginatedConfigurationWithCustomDelimiter(): void
     {
-        $configuration = CsvPaginatedGeneratorConfiguration::create(DummyEntity::class, $this->buildQueryBuilder(), 2)
+        $configuration = CsvQueryBuilderGeneratorConfiguration::create(DummyEntity::class, $this->buildQueryBuilder(), 2)
             ->setDelimiter("&");
 
         $response = $this->generator->streamResponse($configuration, 'my_file');
@@ -266,7 +266,7 @@ class CsvGeneratorTest extends TestCase
 
     public function testStreamResponseWithPaginatedConfigurationWithHeaderTranslationPefix(): void
     {
-        $configuration = CsvPaginatedGeneratorConfiguration::create(DummyEntity::class, $this->buildQueryBuilder(), 2)
+        $configuration = CsvQueryBuilderGeneratorConfiguration::create(DummyEntity::class, $this->buildQueryBuilder(), 2)
             ->setHeaderTranslationPrefix("header_prefix.");
 
         $response = $this->generator->streamResponse($configuration, 'my_file');
@@ -290,7 +290,7 @@ class CsvGeneratorTest extends TestCase
 
     public function testStreamResponseWithPaginatedConfigurationWithCallback(): void
     {
-        $configuration = CsvPaginatedGeneratorConfiguration::create(DummyOtherEntity::class, $this->buildQueryBuilder(), 2)
+        $configuration = CsvQueryBuilderGeneratorConfiguration::create(DummyOtherEntity::class, $this->buildQueryBuilder(), 2)
             ->setObjectTransformerCallback([DummyOtherEntity::class, 'buildFromDummyEntity']);
 
         $response = $this->generator->streamResponse($configuration, 'my_file');

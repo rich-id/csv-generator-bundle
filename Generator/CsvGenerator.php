@@ -2,10 +2,7 @@
 
 namespace RichId\CsvGeneratorBundle\Generator;
 
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use RichId\CsvGeneratorBundle\Configuration\AbstractCsvGeneratorConfiguration;
-use RichId\CsvGeneratorBundle\Configuration\CsvGeneratorConfiguration;
-use RichId\CsvGeneratorBundle\Configuration\CsvPaginatedGeneratorConfiguration;
 use RichId\CsvGeneratorBundle\Utility\PropertiesUtility;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -146,34 +143,8 @@ class CsvGenerator implements CsvGeneratorInterface
     {
         $contentTranslationPrefixes = $this->propertiesUtility->getPropertiesWithContentTranslationPrefix($configuration);
 
-        if ($configuration instanceof CsvPaginatedGeneratorConfiguration) {
-            $this->iterateWithPaginator(
-                $configuration,
-                static function ($object) use ($action, $configuration, $contentTranslationPrefixes) {
-                    $action($object, $configuration, $contentTranslationPrefixes);
-                }
-            );
-        }
-
-        if ($configuration instanceof CsvGeneratorConfiguration) {
-            foreach ($configuration->getObjects() as $object) {
-                $action($object, $configuration, $contentTranslationPrefixes);
-            }
-        }
-    }
-
-    private function iterateWithPaginator(CsvPaginatedGeneratorConfiguration $configuration, callable $action): void
-    {
-        $paginator = new Paginator($configuration->getQueryBuilder());
-        $iterator = $paginator->getIterator();
-
-        while ($iterator->count() > 0) {
-            foreach ($iterator as $object) {
-                $action($object);
-            }
-
-            $paginator->getQuery()->setFirstResult($paginator->getQuery()->getFirstResult() + $configuration->getBatchSize());
-            $iterator = $paginator->getIterator();
+        foreach ($configuration->getObjects() as $object) {
+            $action($object, $configuration, $contentTranslationPrefixes);
         }
     }
 }

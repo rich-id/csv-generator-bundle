@@ -14,6 +14,9 @@ abstract class AbstractCsvGeneratorConfiguration
     /** @var string */
     protected $class;
 
+    /** @var iterable */
+    protected $objects;
+
     /** @var array */
     protected $serializationGroups;
 
@@ -36,6 +39,11 @@ abstract class AbstractCsvGeneratorConfiguration
     public function getClass(): string
     {
         return $this->class;
+    }
+
+    public function getObjects(): iterable
+    {
+        return $this->objects;
     }
 
     public function setSerializationGroups(array $serializationGroups): self
@@ -98,9 +106,10 @@ abstract class AbstractCsvGeneratorConfiguration
         return $this->withHeader;
     }
 
-    protected function initialize(string $class): void
+    protected function initialize(string $class, iterable $objects): void
     {
         $this->class = $class;
+        $this->objects = $objects;
         $this->serializationGroups = [];
         $this->headerTranslationPrefix = null;
         $this->objectTransformerCallback = null;

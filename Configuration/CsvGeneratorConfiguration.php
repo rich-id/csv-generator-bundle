@@ -11,20 +11,10 @@ namespace RichId\CsvGeneratorBundle\Configuration;
  */
 class CsvGeneratorConfiguration extends AbstractCsvGeneratorConfiguration
 {
-    /** @var iterable */
-    protected $objects;
-
-    public function getObjects(): iterable
-    {
-        return $this->objects;
-    }
-
     public static function create(string $class, iterable $objects): CsvGeneratorConfiguration
     {
         $config = new static();
-        $config->initialize($class);
-
-        $config->objects = $objects;
+        $config->initialize($class, $objects);
 
         return $config;
     }
