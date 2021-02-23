@@ -13,6 +13,11 @@ use RichCongress\WebTestBundle\Kernel\DefaultTestKernel;
  */
 class TestKernel extends DefaultTestKernel
 {
+    public function __construct()
+    {
+        parent::__construct('test', false);
+    }
+
     public function getProjectDir(): string
     {
         return __DIR__ . '/../../../';

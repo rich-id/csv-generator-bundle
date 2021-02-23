@@ -5,7 +5,7 @@ namespace RichId\CsvGeneratorBundle\Tests\Configuration;
 use RichCongress\TestTools\TestCase\TestCase;
 use RichId\CsvGeneratorBundle\Configuration\AbstractCsvGeneratorConfiguration;
 use RichId\CsvGeneratorBundle\Configuration\CsvGeneratorConfiguration;
-use RichId\CsvGeneratorBundle\Tests\Resources\DummyEntity;
+use RichId\CsvGeneratorBundle\Tests\Resources\Entity\DummyEntity;
 
 /**
  * Class CsvGeneratorConfigurationTest.
@@ -29,8 +29,8 @@ class CsvGeneratorConfigurationTest extends TestCase
 
     public function testConfiguration(): void
     {
-        $entity1 = new DummyEntity(1, 'name', 'value1');
-        $entity2 = new DummyEntity(2, 'name', 'value1');
+        $entity1 = DummyEntity::build(1, 'name', 'value1');
+        $entity2 = DummyEntity::build(2, 'name', 'value1');
 
         $configuration = CsvGeneratorConfiguration::create('class_name', [$entity1, $entity2]);
 

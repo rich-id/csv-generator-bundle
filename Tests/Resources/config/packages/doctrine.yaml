@@ -1,0 +1,18 @@
+doctrine:
+    dbal:
+        driver: pdo_sqlite
+        user: test
+        dbname: dbTest
+        path: '%kernel.cache_dir%/__DBNAME__.db'
+        url: null
+        memory: false
+    orm:
+        auto_generate_proxy_classes: '%kernel.debug%'
+        mappings:
+            Test:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/Tests/Resources/Entity'
+                prefix: 'RichId\CsvGeneratorBundle\Tests\Resources\Entity'
+                alias: Test
+

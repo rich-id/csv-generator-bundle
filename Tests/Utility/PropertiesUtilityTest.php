@@ -6,7 +6,7 @@ use RichCongress\TestFramework\TestConfiguration\Annotation\TestConfig;
 use RichCongress\TestSuite\TestCase\TestCase;
 use RichId\CsvGeneratorBundle\Configuration\CsvGeneratorConfiguration;
 use RichId\CsvGeneratorBundle\Data\Property;
-use RichId\CsvGeneratorBundle\Tests\Resources\DummyEntity;
+use RichId\CsvGeneratorBundle\Tests\Resources\Entity\DummyEntity;
 use RichId\CsvGeneratorBundle\Utility\PropertiesUtility;
 
 /**

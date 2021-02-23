@@ -8,4 +8,5 @@ return [
     DAMA\DoctrineTestBundle\DAMADoctrineTestBundle::class => ['test' => true],
     RichCongress\WebTestBundle\RichCongressWebTestBundle::class => ['test' => true],
     RichId\CsvGeneratorBundle\RichIdCsvGeneratorBundle::class => ['test' => true],
+    RichCongress\RecurrentFixturesTestBundle\RichCongressRecurrentFixturesTestBundle::class => ['test' => true],
 ];

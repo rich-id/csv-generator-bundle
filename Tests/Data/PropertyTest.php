@@ -4,7 +4,7 @@ namespace RichId\CsvGeneratorBundle\Tests\Data;
 
 use RichCongress\TestTools\TestCase\TestCase;
 use RichId\CsvGeneratorBundle\Data\Property;
-use RichId\CsvGeneratorBundle\Tests\Resources\DummyEntity;
+use RichId\CsvGeneratorBundle\Tests\Resources\Entity\DummyEntity;
 
 /**
  * Class PropertyTest.

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace RichId\CsvGeneratorBundle\Tests\Resources;
+namespace RichId\CsvGeneratorBundle\Tests\Resources\Entity;
 
 final class DummyOtherEntity
 {

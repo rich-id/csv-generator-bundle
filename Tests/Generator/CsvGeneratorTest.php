@@ -6,8 +6,8 @@ use RichCongress\TestFramework\TestConfiguration\Annotation\TestConfig;
 use RichCongress\TestSuite\TestCase\TestCase;
 use RichId\CsvGeneratorBundle\Configuration\CsvGeneratorConfiguration;
 use RichId\CsvGeneratorBundle\Generator\CsvGeneratorInterface;
-use RichId\CsvGeneratorBundle\Tests\Resources\DummyEntity;
-use RichId\CsvGeneratorBundle\Tests\Resources\DummyOtherEntity;
+use RichId\CsvGeneratorBundle\Tests\Resources\Entity\DummyEntity;
+use RichId\CsvGeneratorBundle\Tests\Resources\Entity\DummyOtherEntity;
 use RichId\CsvGeneratorBundle\Tests\Resources\Stub\CsvGeneratorStub;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
  *
  * @covers \RichId\CsvGeneratorBundle\Generator\CsvGenerator
  *
- * @TestConfig("kernel")
+ * @TestConfig("fixtures")
  */
 class CsvGeneratorTest extends TestCase
 {
@@ -36,8 +36,9 @@ class CsvGeneratorTest extends TestCase
 
     public function testGetContent(): void
     {
-        $entity1 = new DummyEntity(1, 'name', 'value1');
-        $entity2 = new DummyEntity(2, 'name', 'value2');
+        $this->getReference(DummyEntity::class, '1');
+        $entity1 = DummyEntity::build(1, 'name', 'value1');
+        $entity2 = DummyEntity::build(2, 'name', 'value2');
 
         $configuration = CsvGeneratorConfiguration::create(DummyEntity::class, [$entity1, $entity2]);
 
@@ -48,8 +49,8 @@ class CsvGeneratorTest extends TestCase
 
     public function testGetContentWithoutHeader(): void
     {
-        $entity1 = new DummyEntity(1, 'name', 'value1');
-        $entity2 = new DummyEntity(2, 'name', 'value2');
+        $entity1 = DummyEntity::build(1, 'name', 'value1');
+        $entity2 = DummyEntity::build(2, 'name', 'value2');
 
         $configuration = CsvGeneratorConfiguration::create(DummyEntity::class, [$entity1, $entity2])
             ->setWithHeader(false);
@@ -61,8 +62,8 @@ class CsvGeneratorTest extends TestCase
 
     public function testGetContentWithSerializationGroups(): void
     {
-        $entity1 = new DummyEntity(1, 'name', 'value1');
-        $entity2 = new DummyEntity(2, 'name', 'value2');
+        $entity1 = DummyEntity::build(1, 'name', 'value1');
+        $entity2 = DummyEntity::build(2, 'name', 'value2');
 
         $configuration = CsvGeneratorConfiguration::create(DummyEntity::class, [$entity1, $entity2])
             ->setSerializationGroups(['my_serialization_group']);
@@ -74,8 +75,8 @@ class CsvGeneratorTest extends TestCase
 
     public function testGetContentWithCustomDelimiter(): void
     {
-        $entity1 = new DummyEntity(1, 'name', 'value1');
-        $entity2 = new DummyEntity(2, 'name', 'value2');
+        $entity1 = DummyEntity::build(1, 'name', 'value1');
+        $entity2 = DummyEntity::build(2, 'name', 'value2');
 
         $configuration = CsvGeneratorConfiguration::create(DummyEntity::class, [$entity1, $entity2])
             ->setDelimiter("&");
@@ -87,8 +88,8 @@ class CsvGeneratorTest extends TestCase
 
     public function testGetContentWithHeaderTranslationPefix(): void
     {
-        $entity1 = new DummyEntity(1, 'name', 'value1');
-        $entity2 = new DummyEntity(2, 'name', 'value2');
+        $entity1 = DummyEntity::build(1, 'name', 'value1');
+        $entity2 = DummyEntity::build(2, 'name', 'value2');
 
         $configuration = CsvGeneratorConfiguration::create(DummyEntity::class, [$entity1, $entity2])
             ->setHeaderTranslationPrefix("header_prefix.");
@@ -100,8 +101,8 @@ class CsvGeneratorTest extends TestCase
 
     public function testGetContentWithCallback(): void
     {
-        $entity1 = new DummyEntity(1, 'name', 'value1');
-        $entity2 = new DummyEntity(2, 'name', 'value2');
+        $entity1 = DummyEntity::build(1, 'name', 'value1');
+        $entity2 = DummyEntity::build(2, 'name', 'value2');
 
         $configuration = CsvGeneratorConfiguration::create(DummyOtherEntity::class, [$entity1, $entity2])
             ->setObjectTransformerCallback([DummyOtherEntity::class, 'buildFromDummyEntity']);
@@ -113,8 +114,8 @@ class CsvGeneratorTest extends TestCase
 
     public function testStreamResponse(): void
     {
-        $entity1 = new DummyEntity(1, 'name', 'value1');
-        $entity2 = new DummyEntity(2, 'name', 'value2');
+        $entity1 = DummyEntity::build(1, 'name', 'value1');
+        $entity2 = DummyEntity::build(2, 'name', 'value2');
 
         $configuration = CsvGeneratorConfiguration::create(DummyEntity::class, [$entity1, $entity2]);
 
@@ -127,8 +128,8 @@ class CsvGeneratorTest extends TestCase
 
     public function testStreamResponseWithoutHeader(): void
     {
-        $entity1 = new DummyEntity(1, 'name', 'value1');
-        $entity2 = new DummyEntity(2, 'name', 'value2');
+        $entity1 = DummyEntity::build(1, 'name', 'value1');
+        $entity2 = DummyEntity::build(2, 'name', 'value2');
 
         $configuration = CsvGeneratorConfiguration::create(DummyEntity::class, [$entity1, $entity2])
             ->setWithHeader(false);
@@ -142,8 +143,8 @@ class CsvGeneratorTest extends TestCase
 
     public function testStreamResponseWithSerializationGroups(): void
     {
-        $entity1 = new DummyEntity(1, 'name', 'value1');
-        $entity2 = new DummyEntity(2, 'name', 'value2');
+        $entity1 = DummyEntity::build(1, 'name', 'value1');
+        $entity2 = DummyEntity::build(2, 'name', 'value2');
 
         $configuration = CsvGeneratorConfiguration::create(DummyEntity::class, [$entity1, $entity2])
             ->setSerializationGroups(['my_serialization_group']);
@@ -157,8 +158,8 @@ class CsvGeneratorTest extends TestCase
 
     public function testStreamResponseWithCustomDelimiter(): void
     {
-        $entity1 = new DummyEntity(1, 'name', 'value1');
-        $entity2 = new DummyEntity(2, 'name', 'value2');
+        $entity1 = DummyEntity::build(1, 'name', 'value1');
+        $entity2 = DummyEntity::build(2, 'name', 'value2');
 
         $configuration = CsvGeneratorConfiguration::create(DummyEntity::class, [$entity1, $entity2])
             ->setDelimiter("&");
@@ -172,8 +173,8 @@ class CsvGeneratorTest extends TestCase
 
     public function testStreamResponseWithHeaderTranslationPefix(): void
     {
-        $entity1 = new DummyEntity(1, 'name', 'value1');
-        $entity2 = new DummyEntity(2, 'name', 'value2');
+        $entity1 = DummyEntity::build(1, 'name', 'value1');
+        $entity2 = DummyEntity::build(2, 'name', 'value2');
 
         $configuration = CsvGeneratorConfiguration::create(DummyEntity::class, [$entity1, $entity2])
             ->setHeaderTranslationPrefix("header_prefix.");
@@ -187,8 +188,8 @@ class CsvGeneratorTest extends TestCase
 
     public function testStreamResponseWithCallback(): void
     {
-        $entity1 = new DummyEntity(1, 'name', 'value1');
-        $entity2 = new DummyEntity(2, 'name', 'value2');
+        $entity1 = DummyEntity::build(1, 'name', 'value1');
+        $entity2 = DummyEntity::build(2, 'name', 'value2');
 
         $configuration = CsvGeneratorConfiguration::create(DummyOtherEntity::class, [$entity1, $entity2])
             ->setObjectTransformerCallback([DummyOtherEntity::class, 'buildFromDummyEntity']);

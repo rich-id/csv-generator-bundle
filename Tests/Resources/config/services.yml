@@ -11,3 +11,5 @@ services:
 
     RichId\CsvGeneratorBundle\Tests\Resources\Stub\CsvGeneratorStub:
         decorates: RichId\CsvGeneratorBundle\Generator\CsvGenerator
+
+    RichId\CsvGeneratorBundle\Tests\Resources\Fixtures\DummyEntityFixtures: ~

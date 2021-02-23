@@ -32,6 +32,7 @@
     <!-- ###+ symfony/framework-bundle ### -->
     <env name="APP_ENV" value="test"/>
     <env name="APP_SECRET" value="AppSecret"/>
+    <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak"/>
     <!-- ###- symfony/framework-bundle ### -->
   </php>
 
