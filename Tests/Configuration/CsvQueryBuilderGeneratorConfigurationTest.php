@@ -50,6 +50,15 @@ class CsvQueryBuilderGeneratorConfigurationTest extends TestCase
         $this->assertSame(';', $configuration->getDelimiter());
         $this->assertTrue($configuration->isWithHeader());
         $this->assertInstanceOf(\Generator::class, $configuration->getObjects());
+
+        $entities = [];
+
+        foreach ($configuration->getObjects() as $entity) {
+            $entities[] = $entity;
+            $this->assertInstanceOf(DummyEntity::class, $entity);
+        }
+
+        $this->assertCount(5, $entities);
     }
 
     private function buildQueryBuilder(): QueryBuilder
