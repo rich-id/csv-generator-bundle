@@ -86,7 +86,7 @@ class CsvGenerator implements CsvGeneratorInterface
     }
 
     /**
-     * This interfears with the way PHPUnit handles the outputs
+     * This interferes with the way PHPUnit handles the outputs
      *
      * @codeCoverageIgnore
      */
