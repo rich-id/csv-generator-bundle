@@ -6,11 +6,11 @@ Getting Started With RichIdCsvGeneratorBundle
 This version of the bundle requires Symfony 4.4+ and PHP 7.3+.
 
 [![Package version](https://img.shields.io/packagist/v/rich-id/csv-generator-bundle)](https://packagist.org/packages/rich-id/csv-generator-bundle)
-[![Build Status](https://img.shields.io/travis/rich-id/csv-generator-bundle.svg?branch=master)](https://travis-ci.org/rich-id/csv-generator-bundle?branch=master)
+[![Actions Status](https://github.com/rich-id/csv-generator-bundle/workflows/Tests/badge.svg)](https://github.com/t/rich-id/csv-generator-bundle/actions)
 [![Coverage Status](https://coveralls.io/repos/github/rich-id/csv-generator-bundle/badge.svg?branch=master)](https://coveralls.io/github/rich-id/csv-generator-bundle?branch=master)
 [![Maintainability](https://api.codeclimate.com/v1/badges/d9e628f4e123ec999a57/maintainability)](https://codeclimate.com/github/rich-id/csv-generator-bundle/maintainability)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/rich-id/csv-generator-bundle/issues)
-[![License](https://img.shields.io/badge/license-MIT-red.svg)](LICENSE.md)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.md)
 
 The csv-generator-bundle provide csv generation from model.
 
@@ -33,8 +33,6 @@ composer rich-id/csv-generator-bundle
 ```
 
 # 2 Getting started
-
-- [Configuration](Docs/Configuration.md)
 
 # 3. Versioning
 

@@ -2,9 +2,12 @@
 
 namespace RichId\CsvGeneratorBundle\Tests\Generator;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
 use RichCongress\TestFramework\TestConfiguration\Annotation\TestConfig;
 use RichCongress\TestSuite\TestCase\TestCase;
 use RichId\CsvGeneratorBundle\Configuration\CsvGeneratorConfiguration;
+use RichId\CsvGeneratorBundle\Configuration\CsvPaginatedGeneratorConfiguration;
 use RichId\CsvGeneratorBundle\Generator\CsvGeneratorInterface;
 use RichId\CsvGeneratorBundle\Tests\Resources\Entity\DummyEntity;
 use RichId\CsvGeneratorBundle\Tests\Resources\Entity\DummyOtherEntity;
@@ -29,6 +32,9 @@ class CsvGeneratorTest extends TestCase
     /** @var CsvGeneratorStub */
     public $generator;
 
+    /** @var EntityManagerInterface */
+    public $entityManager;
+
     public function testInstanciate(): void
     {
         $this->assertInstanceOf(CsvGeneratorInterface::class, $this->generator);
@@ -36,11 +42,16 @@ class CsvGeneratorTest extends TestCase
 
     public function testGetContent(): void
     {
-        $this->getReference(DummyEntity::class, '1');
-        $entity1 = DummyEntity::build(1, 'name', 'value1');
-        $entity2 = DummyEntity::build(2, 'name', 'value2');
+        $configuration = CsvGeneratorConfiguration::create(DummyEntity::class, $this->getEntities());
 
-        $configuration = CsvGeneratorConfiguration::create(DummyEntity::class, [$entity1, $entity2]);
+        $content = $this->generator->getContent($configuration);
+
+        $this->assertEquals(\file_get_contents(self::RESOURCES_DIR . '/dummy-entities.csv'), $content);
+    }
+
+    public function testGetContentWithPaginatedConfiguration(): void
+    {
+        $configuration = CsvPaginatedGeneratorConfiguration::create(DummyEntity::class, $this->buildQueryBuilder(), 2);
 
         $content = $this->generator->getContent($configuration);
 
@@ -49,10 +60,17 @@ class CsvGeneratorTest extends TestCase
 
     public function testGetContentWithoutHeader(): void
     {
-        $entity1 = DummyEntity::build(1, 'name', 'value1');
-        $entity2 = DummyEntity::build(2, 'name', 'value2');
+        $configuration = CsvGeneratorConfiguration::create(DummyEntity::class, $this->getEntities())
+            ->setWithHeader(false);
 
-        $configuration = CsvGeneratorConfiguration::create(DummyEntity::class, [$entity1, $entity2])
+        $content = $this->generator->getContent($configuration);
+
+        $this->assertEquals(\file_get_contents(self::RESOURCES_DIR . '/dummy-entities-without-header.csv'), $content);
+    }
+
+    public function testGetContentWithPaginatedConfigurationWithoutHeader(): void
+    {
+        $configuration = CsvPaginatedGeneratorConfiguration::create(DummyEntity::class, $this->buildQueryBuilder(), 2)
             ->setWithHeader(false);
 
         $content = $this->generator->getContent($configuration);
@@ -62,10 +80,17 @@ class CsvGeneratorTest extends TestCase
 
     public function testGetContentWithSerializationGroups(): void
     {
-        $entity1 = DummyEntity::build(1, 'name', 'value1');
-        $entity2 = DummyEntity::build(2, 'name', 'value2');
+        $configuration = CsvGeneratorConfiguration::create(DummyEntity::class, $this->getEntities())
+            ->setSerializationGroups(['my_serialization_group']);
 
-        $configuration = CsvGeneratorConfiguration::create(DummyEntity::class, [$entity1, $entity2])
+        $content = $this->generator->getContent($configuration);
+
+        $this->assertEquals(\file_get_contents(self::RESOURCES_DIR . '/dummy-entities-with-serialization-groups.csv'), $content);
+    }
+
+    public function testGetContentWithPaginatedConfigurationWithSerializationGroups(): void
+    {
+        $configuration = CsvPaginatedGeneratorConfiguration::create(DummyEntity::class, $this->buildQueryBuilder(), 2)
             ->setSerializationGroups(['my_serialization_group']);
 
         $content = $this->generator->getContent($configuration);
@@ -75,10 +100,17 @@ class CsvGeneratorTest extends TestCase
 
     public function testGetContentWithCustomDelimiter(): void
     {
-        $entity1 = DummyEntity::build(1, 'name', 'value1');
-        $entity2 = DummyEntity::build(2, 'name', 'value2');
+        $configuration = CsvGeneratorConfiguration::create(DummyEntity::class, $this->getEntities())
+            ->setDelimiter("&");
 
-        $configuration = CsvGeneratorConfiguration::create(DummyEntity::class, [$entity1, $entity2])
+        $content = $this->generator->getContent($configuration);
+
+        $this->assertEquals(\file_get_contents(self::RESOURCES_DIR . '/dummy-entities-with-delimiter.csv'), $content);
+    }
+
+    public function testGetContentWithPaginatedConfigurationWithCustomDelimiter(): void
+    {
+        $configuration = CsvPaginatedGeneratorConfiguration::create(DummyEntity::class, $this->buildQueryBuilder(), 2)
             ->setDelimiter("&");
 
         $content = $this->generator->getContent($configuration);
@@ -88,10 +120,17 @@ class CsvGeneratorTest extends TestCase
 
     public function testGetContentWithHeaderTranslationPefix(): void
     {
-        $entity1 = DummyEntity::build(1, 'name', 'value1');
-        $entity2 = DummyEntity::build(2, 'name', 'value2');
+        $configuration = CsvGeneratorConfiguration::create(DummyEntity::class, $this->getEntities())
+            ->setHeaderTranslationPrefix("header_prefix.");
 
-        $configuration = CsvGeneratorConfiguration::create(DummyEntity::class, [$entity1, $entity2])
+        $content = $this->generator->getContent($configuration);
+
+        $this->assertEquals(\file_get_contents(self::RESOURCES_DIR . '/dummy-entities-with-header-prefix.csv'), $content);
+    }
+
+    public function testGetContentWithPaginatedConfigurationWithHeaderTranslationPefix(): void
+    {
+        $configuration = CsvPaginatedGeneratorConfiguration::create(DummyEntity::class, $this->buildQueryBuilder(), 2)
             ->setHeaderTranslationPrefix("header_prefix.");
 
         $content = $this->generator->getContent($configuration);
@@ -101,10 +140,17 @@ class CsvGeneratorTest extends TestCase
 
     public function testGetContentWithCallback(): void
     {
-        $entity1 = DummyEntity::build(1, 'name', 'value1');
-        $entity2 = DummyEntity::build(2, 'name', 'value2');
+        $configuration = CsvGeneratorConfiguration::create(DummyOtherEntity::class, $this->getEntities())
+            ->setObjectTransformerCallback([DummyOtherEntity::class, 'buildFromDummyEntity']);
 
-        $configuration = CsvGeneratorConfiguration::create(DummyOtherEntity::class, [$entity1, $entity2])
+        $content = $this->generator->getContent($configuration);
+
+        $this->assertEquals(\file_get_contents(self::RESOURCES_DIR . '/dummy-entities-with-callback.csv'), $content);
+    }
+
+    public function testGetContentWithPaginatedConfigurationWithCallback(): void
+    {
+        $configuration = CsvPaginatedGeneratorConfiguration::create(DummyOtherEntity::class, $this->buildQueryBuilder(), 2)
             ->setObjectTransformerCallback([DummyOtherEntity::class, 'buildFromDummyEntity']);
 
         $content = $this->generator->getContent($configuration);
@@ -114,10 +160,18 @@ class CsvGeneratorTest extends TestCase
 
     public function testStreamResponse(): void
     {
-        $entity1 = DummyEntity::build(1, 'name', 'value1');
-        $entity2 = DummyEntity::build(2, 'name', 'value2');
+        $configuration = CsvGeneratorConfiguration::create(DummyEntity::class, $this->getEntities());
 
-        $configuration = CsvGeneratorConfiguration::create(DummyEntity::class, [$entity1, $entity2]);
+        $response = $this->generator->streamResponse($configuration, 'my_file');
+        $response->sendContent();
+
+        $this->assertInstanceOf(StreamedResponse::class, $response);
+        $this->assertEquals(\file_get_contents(self::RESOURCES_DIR . '/dummy-entities.csv'), $this->generator->getStreamedContent());
+    }
+
+    public function testStreamResponseWithPaginatedConfiguration(): void
+    {
+        $configuration = CsvPaginatedGeneratorConfiguration::create(DummyEntity::class, $this->buildQueryBuilder(), 2);
 
         $response = $this->generator->streamResponse($configuration, 'my_file');
         $response->sendContent();
@@ -128,10 +182,19 @@ class CsvGeneratorTest extends TestCase
 
     public function testStreamResponseWithoutHeader(): void
     {
-        $entity1 = DummyEntity::build(1, 'name', 'value1');
-        $entity2 = DummyEntity::build(2, 'name', 'value2');
+        $configuration = CsvGeneratorConfiguration::create(DummyEntity::class, $this->getEntities())
+            ->setWithHeader(false);
 
-        $configuration = CsvGeneratorConfiguration::create(DummyEntity::class, [$entity1, $entity2])
+        $response = $this->generator->streamResponse($configuration, 'my_file');
+        $response->sendContent();
+
+        $this->assertInstanceOf(StreamedResponse::class, $response);
+        $this->assertEquals(\file_get_contents(self::RESOURCES_DIR . '/dummy-entities-without-header.csv'), $this->generator->getStreamedContent());
+    }
+
+    public function testStreamResponseWithPaginatedConfigurationWithoutHeader(): void
+    {
+        $configuration = CsvPaginatedGeneratorConfiguration::create(DummyEntity::class, $this->buildQueryBuilder(), 2)
             ->setWithHeader(false);
 
         $response = $this->generator->streamResponse($configuration, 'my_file');
@@ -143,10 +206,19 @@ class CsvGeneratorTest extends TestCase
 
     public function testStreamResponseWithSerializationGroups(): void
     {
-        $entity1 = DummyEntity::build(1, 'name', 'value1');
-        $entity2 = DummyEntity::build(2, 'name', 'value2');
+        $configuration = CsvGeneratorConfiguration::create(DummyEntity::class, $this->getEntities())
+            ->setSerializationGroups(['my_serialization_group']);
 
-        $configuration = CsvGeneratorConfiguration::create(DummyEntity::class, [$entity1, $entity2])
+        $response = $this->generator->streamResponse($configuration, 'my_file');
+        $response->sendContent();
+
+        $this->assertInstanceOf(StreamedResponse::class, $response);
+        $this->assertEquals(\file_get_contents(self::RESOURCES_DIR . '/dummy-entities-with-serialization-groups.csv'), $this->generator->getStreamedContent());
+    }
+
+    public function testStreamResponseWithPaginatedConfigurationWithSerializationGroups(): void
+    {
+        $configuration = CsvPaginatedGeneratorConfiguration::create(DummyEntity::class, $this->buildQueryBuilder(), 2)
             ->setSerializationGroups(['my_serialization_group']);
 
         $response = $this->generator->streamResponse($configuration, 'my_file');
@@ -158,10 +230,19 @@ class CsvGeneratorTest extends TestCase
 
     public function testStreamResponseWithCustomDelimiter(): void
     {
-        $entity1 = DummyEntity::build(1, 'name', 'value1');
-        $entity2 = DummyEntity::build(2, 'name', 'value2');
+        $configuration = CsvGeneratorConfiguration::create(DummyEntity::class, $this->getEntities())
+            ->setDelimiter("&");
 
-        $configuration = CsvGeneratorConfiguration::create(DummyEntity::class, [$entity1, $entity2])
+        $response = $this->generator->streamResponse($configuration, 'my_file');
+        $response->sendContent();
+
+        $this->assertInstanceOf(StreamedResponse::class, $response);
+        $this->assertEquals(\file_get_contents(self::RESOURCES_DIR . '/dummy-entities-with-delimiter.csv'), $this->generator->getStreamedContent());
+    }
+
+    public function testStreamResponseWithPaginatedConfigurationWithCustomDelimiter(): void
+    {
+        $configuration = CsvPaginatedGeneratorConfiguration::create(DummyEntity::class, $this->buildQueryBuilder(), 2)
             ->setDelimiter("&");
 
         $response = $this->generator->streamResponse($configuration, 'my_file');
@@ -173,10 +254,19 @@ class CsvGeneratorTest extends TestCase
 
     public function testStreamResponseWithHeaderTranslationPefix(): void
     {
-        $entity1 = DummyEntity::build(1, 'name', 'value1');
-        $entity2 = DummyEntity::build(2, 'name', 'value2');
+        $configuration = CsvGeneratorConfiguration::create(DummyEntity::class, $this->getEntities())
+            ->setHeaderTranslationPrefix("header_prefix.");
 
-        $configuration = CsvGeneratorConfiguration::create(DummyEntity::class, [$entity1, $entity2])
+        $response = $this->generator->streamResponse($configuration, 'my_file');
+        $response->sendContent();
+
+        $this->assertInstanceOf(StreamedResponse::class, $response);
+        $this->assertEquals(\file_get_contents(self::RESOURCES_DIR . '/dummy-entities-with-header-prefix.csv'), $this->generator->getStreamedContent());
+    }
+
+    public function testStreamResponseWithPaginatedConfigurationWithHeaderTranslationPefix(): void
+    {
+        $configuration = CsvPaginatedGeneratorConfiguration::create(DummyEntity::class, $this->buildQueryBuilder(), 2)
             ->setHeaderTranslationPrefix("header_prefix.");
 
         $response = $this->generator->streamResponse($configuration, 'my_file');
@@ -188,10 +278,7 @@ class CsvGeneratorTest extends TestCase
 
     public function testStreamResponseWithCallback(): void
     {
-        $entity1 = DummyEntity::build(1, 'name', 'value1');
-        $entity2 = DummyEntity::build(2, 'name', 'value2');
-
-        $configuration = CsvGeneratorConfiguration::create(DummyOtherEntity::class, [$entity1, $entity2])
+        $configuration = CsvGeneratorConfiguration::create(DummyOtherEntity::class, $this->getEntities())
             ->setObjectTransformerCallback([DummyOtherEntity::class, 'buildFromDummyEntity']);
 
         $response = $this->generator->streamResponse($configuration, 'my_file');
@@ -199,5 +286,36 @@ class CsvGeneratorTest extends TestCase
 
         $this->assertInstanceOf(StreamedResponse::class, $response);
         $this->assertEquals(\file_get_contents(self::RESOURCES_DIR . '/dummy-entities-with-callback.csv'), $this->generator->getStreamedContent());
+    }
+
+    public function testStreamResponseWithPaginatedConfigurationWithCallback(): void
+    {
+        $configuration = CsvPaginatedGeneratorConfiguration::create(DummyOtherEntity::class, $this->buildQueryBuilder(), 2)
+            ->setObjectTransformerCallback([DummyOtherEntity::class, 'buildFromDummyEntity']);
+
+        $response = $this->generator->streamResponse($configuration, 'my_file');
+        $response->sendContent();
+
+        $this->assertInstanceOf(StreamedResponse::class, $response);
+        $this->assertEquals(\file_get_contents(self::RESOURCES_DIR . '/dummy-entities-with-callback.csv'), $this->generator->getStreamedContent());
+    }
+
+    private function getEntities(): array
+    {
+        return [
+            $this->getReference(DummyEntity::class, '1'),
+            $this->getReference(DummyEntity::class, '2'),
+            $this->getReference(DummyEntity::class, '3'),
+            $this->getReference(DummyEntity::class, '4'),
+            $this->getReference(DummyEntity::class, '5'),
+        ];
+    }
+
+    private function buildQueryBuilder(): QueryBuilder
+    {
+        $qb = $this->entityManager->createQueryBuilder();
+
+        return $qb->select('de')
+            ->from(DummyEntity::class, 'de');
     }
 }

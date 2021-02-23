@@ -52,7 +52,7 @@ class DummyEntity
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=250, nullable=false, name="other_title")
+     * @ORM\Column(type="string", length=250, nullable=true, name="other_title")
      *
      * @CsvContentTranslationPrefix("my_content_translation_prefix.")
      */

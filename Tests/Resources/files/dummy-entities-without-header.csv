@@ -1,2 +1,5 @@
-1;name;;"Valeur 1";
-2;name;;"Valeur 2";
+1;"Entity 1";"Title 1";"Valeur 2";
+2;"Entity 2";"Title 2";"Valeur 1";"Valeur 2"
+3;"Entity 3";"Title 3";"Valeur 2";"Valeur 1"
+4;"Entity 4";"Title 4";"Valeur 1";"Valeur 2"
+5;"Entity 5";"Title 5";"Valeur 2";"Valeur 1"

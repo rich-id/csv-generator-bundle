@@ -14,9 +14,9 @@ final class DummyEntityFixtures extends AbstractFixture
             '1',
             [
                 'name'       => 'Entity 1',
-                'other'      => 'Other 1',
+                'other'      => 'value2',
                 'title'      => 'Title 1',
-                'otherTitle' => 'OtherTitle 1',
+                'otherTitle' => null,
             ]
         );
 
@@ -25,9 +25,9 @@ final class DummyEntityFixtures extends AbstractFixture
             '2',
             [
                 'name'       => 'Entity 2',
-                'other'      => 'Other 2',
+                'other'      => 'value1',
                 'title'      => 'Title 2',
-                'otherTitle' => 'OtherTitle 2',
+                'otherTitle' => 'value2',
             ]
         );
 
@@ -36,9 +36,9 @@ final class DummyEntityFixtures extends AbstractFixture
             '3',
             [
                 'name'       => 'Entity 3',
-                'other'      => 'Other 3',
+                'other'      => 'value2',
                 'title'      => 'Title 3',
-                'otherTitle' => 'OtherTitle 3',
+                'otherTitle' => 'value1',
             ]
         );
 
@@ -47,9 +47,9 @@ final class DummyEntityFixtures extends AbstractFixture
             '4',
             [
                 'name'       => 'Entity 4',
-                'other'      => 'Other 4',
+                'other'      => 'value1',
                 'title'      => 'Title 4',
-                'otherTitle' => 'OtherTitle 4',
+                'otherTitle' => 'value2',
             ]
         );
 
@@ -58,9 +58,9 @@ final class DummyEntityFixtures extends AbstractFixture
             '5',
             [
                 'name'       => 'Entity 5',
-                'other'      => 'Other 5',
+                'other'      => 'value2',
                 'title'      => 'Title 5',
-                'otherTitle' => 'OtherTitle 5',
+                'otherTitle' => 'value1',
             ]
         );
     }
