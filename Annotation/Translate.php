@@ -3,7 +3,7 @@
 namespace RichId\CsvGeneratorBundle\Annotation;
 
 /**
- * Class CsvContentTranslationPrefix.
+ * Class Translate.
  *
  * @package   RichId\CsvGeneratorBundle\Annotation
  * @author    Hugo Dumazeau <hugo.dumazeau@rich-id.fr>
@@ -12,9 +12,15 @@ namespace RichId\CsvGeneratorBundle\Annotation;
  * @Annotation
  * @Target({"PROPERTY"})
  */
-class CsvContentTranslationPrefix
+class Translate
 {
     /** @var string */
-    public $translationPrefix;
+    public $prefix = '';
+
+    /** @var string|null */
+    public $domain;
+
+    /** @var string|null */
+    public $locale;
 }
 

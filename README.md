@@ -1,6 +1,8 @@
-![Test Image 1](.github/csv-generator-bundle.svg)
+<p align="center">
+  <img width="460" height="300" src=".github/csv-generator-bundle.svg">
+</p>
 
-Getting Started With RichIdCsvGeneratorBundle
+RichID CSV Generator Bundle
 =======================================
 
 This version of the bundle requires Symfony 4.4+ and PHP 7.3+.
@@ -12,16 +14,17 @@ This version of the bundle requires Symfony 4.4+ and PHP 7.3+.
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/rich-id/csv-generator-bundle/issues)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.md)
 
-The csv-generator-bundle provide csv generation from model.
+The bundle provides a set of annotations and configurations to quickly and easily generate CSV from a model instance.
 
 # Table of content
 
 1. [Installation](#1-installation)
 2. [Getting started](#2-getting-started)
-3. [Versioning](#3-versioning)
-4. [Contributing](#4-contributing)
-5. [Hacking](#5-hacking)
-6. [License](#6-license)
+3. [Usage](#3-usage)
+4. [Versioning](#4-versioning)
+5. [Contributing](#5-contributing)
+6. [Hacking](#6-hacking)
+7. [License](#7-license)
 
 
 # 1. Installation
@@ -34,7 +37,63 @@ composer rich-id/csv-generator-bundle
 
 # 2 Getting started
 
-# 3. Versioning
+Create a model that reflects what you want to serialize. Keep in mind that the order of the properties are will be preserved in the generated CSV file.
+
+```php
+use RichId\CsvGeneratorBundle\Annotation as CSV;
+
+class DummyCsvModel
+{
+    /** @var string */
+    public $firstEntry;
+    
+    /**
+     * @var string
+     *            
+     * @CSV\Translate(prefix="dummy_model.second_entry.")
+     */
+    public $secondEntry;
+    
+    /**
+     * @var int
+     */
+    private $thirdEntry;
+    
+    public function getThirdEntry(): int
+    {
+        return $this->thirdEntry;
+    }
+}
+```
+
+- Note that the second entry will be translated using the [Symfony Translator](https://symfony.com/doc/current/translation.html).
+- Note that the third entry is private, and the [Symfony PropertyAccessor](https://symfony.com/doc/current/components/property_access.html) will be used to fetch its value.
+
+This will be easily serialized using the Symfony Serializer. 
+
+```php
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\HttpFoundation\Response;
+
+class DummyController extends AbstractController
+{
+    public function dummyRouteAction(SerializerInterface $serializer): Response
+    {
+        // ...
+        $serialized = $serializer->serialize($dummyCsvModel, 'csv');
+        
+        return new Response($serialized);
+    }
+}
+```
+
+# 3. Usage
+
+- [Translation](Docs/Translation.md)
+- [Streamed response](Docs/StreamedResponse.md)
+
+# 4. Versioning
 
 template-bundle follows [semantic versioning](https://semver.org/). In short the scheme is MAJOR.MINOR.PATCH where
 1. MAJOR is bumped when there is a breaking change,
@@ -44,7 +103,7 @@ template-bundle follows [semantic versioning](https://semver.org/). In short the
 Versions bellow 1.0.0 are considered experimental and breaking changes may occur at any time.
 
 
-# 4. Contributing
+# 5. Contributing
 
 Contributions are welcomed! There are many ways to contribute, and we appreciate all of them. Here are some of the major ones:
 
@@ -55,7 +114,7 @@ Contributions are welcomed! There are many ways to contribute, and we appreciate
 As a reminder, all contributors are expected to follow our [Code of Conduct](CODE_OF_CONDUCT.md).
 
 
-# 5. Hacking
+# 6. Hacking
 
 You might use Docker and `docker-compose` to hack the project. Check out the following commands.
 
@@ -74,7 +133,7 @@ docker-compose exec application bash
 ```
 
 
-# 6. License
+# 7. License
 
 template-bundle is distributed under the terms of the MIT license.
 
