@@ -16,16 +16,16 @@
         "issues": "https://github.com/rich-id/csv-generator-bundle/issues"
     },
     "require": {
-        "php": ">=7.3",
+        "php": "^8.0",
         "doctrine/orm": "^2.7",
         "richcongress/bundle-toolbox": "*",
-        "symfony/http-foundation": "^4.4",
-        "symfony/serializer": "^4.4",
-        "symfony/translation": "^4.4"
+        "symfony/http-foundation": "^5.4",
+        "symfony/serializer": "^5.4",
+        "symfony/translation": "^5.4"
     },
     "require-dev": {
         "richcongress/test-suite": "^0.1",
-        "infection/infection": "^0.16.4"
+        "infection/infection": "^0.20.2"
     },
     "autoload": {
         "psr-4": {
