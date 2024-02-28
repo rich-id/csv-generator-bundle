@@ -10,6 +10,7 @@
         <service id="RichId\CsvGeneratorBundle\Generator\CsvGenerator" />
         <service id="RichId\CsvGeneratorBundle\Generator\CsvGeneratorInterface" alias="RichId\CsvGeneratorBundle\Generator\CsvGenerator" />
 
+        <service id="RichId\CsvGeneratorBundle\Utility\ObjectNormalizer" />
         <service id="RichId\CsvGeneratorBundle\Utility\PropertiesUtility" />
     </services>
 </container>

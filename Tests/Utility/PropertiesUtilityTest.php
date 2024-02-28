@@ -2,7 +2,7 @@
 
 namespace RichId\CsvGeneratorBundle\Tests\Utility;
 
-use RichCongress\TestFramework\TestConfiguration\Annotation\TestConfig;
+use RichCongress\TestFramework\TestConfiguration\Attribute\TestConfig;
 use RichCongress\TestSuite\TestCase\TestCase;
 use RichId\CsvGeneratorBundle\Configuration\CsvGeneratorConfiguration;
 use RichId\CsvGeneratorBundle\Data\Property;
@@ -17,9 +17,8 @@ use RichId\CsvGeneratorBundle\Utility\PropertiesUtility;
  * @copyright 2014 - 2021 RichId (https://www.rich-id.fr)
  *
  * @covers \RichId\CsvGeneratorBundle\Utility\PropertiesUtility
- *
- * @TestConfig("kernel")
  */
+#[TestConfig('kernel')]
 class PropertiesUtilityTest extends TestCase
 {
     /** @var PropertiesUtility */

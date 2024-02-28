@@ -4,7 +4,7 @@ namespace RichId\CsvGeneratorBundle\Tests\Configuration;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
-use RichCongress\TestFramework\TestConfiguration\Annotation\TestConfig;
+use RichCongress\TestFramework\TestConfiguration\Attribute\TestConfig;
 use RichCongress\TestSuite\TestCase\TestCase;
 use RichId\CsvGeneratorBundle\Configuration\AbstractCsvGeneratorConfiguration;
 use RichId\CsvGeneratorBundle\Configuration\CsvQueryBuilderGeneratorConfiguration;
@@ -19,9 +19,8 @@ use RichId\CsvGeneratorBundle\Tests\Resources\Entity\DummyEntity;
  *
  * @covers \RichId\CsvGeneratorBundle\Configuration\AbstractCsvGeneratorConfiguration
  * @covers \RichId\CsvGeneratorBundle\Configuration\CsvQueryBuilderGeneratorConfiguration
- *
- * @TestConfig("fixtures")
  */
+#[TestConfig('fixtures')]
 class CsvQueryBuilderGeneratorConfigurationTest extends TestCase
 {
     /** @var EntityManagerInterface */

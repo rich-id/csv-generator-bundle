@@ -4,7 +4,7 @@ namespace RichId\CsvGeneratorBundle\Tests\Generator;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
-use RichCongress\TestFramework\TestConfiguration\Annotation\TestConfig;
+use RichCongress\TestFramework\TestConfiguration\Attribute\TestConfig;
 use RichCongress\TestSuite\TestCase\TestCase;
 use RichId\CsvGeneratorBundle\Configuration\CsvGeneratorConfiguration;
 use RichId\CsvGeneratorBundle\Configuration\CsvQueryBuilderGeneratorConfiguration;
@@ -22,9 +22,8 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
  * @copyright 2014 - 2021 RichId (https://www.rich-id.fr)
  *
  * @covers \RichId\CsvGeneratorBundle\Generator\CsvGenerator
- *
- * @TestConfig("fixtures")
  */
+#[TestConfig('fixtures')]
 class CsvGeneratorTest extends TestCase
 {
     protected const RESOURCES_DIR = __DIR__ . '/../Resources/files/';

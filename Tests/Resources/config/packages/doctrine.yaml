@@ -11,7 +11,7 @@ doctrine:
         mappings:
             Test:
                 is_bundle: false
-                type: annotation
+                type: attribute
                 dir: '%kernel.project_dir%/Tests/Resources/Entity'
                 prefix: 'RichId\CsvGeneratorBundle\Tests\Resources\Entity'
                 alias: Test

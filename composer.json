@@ -3,6 +3,8 @@
     "description": "A csv bundle for Symfony 5.4",
     "type": "symfony-bundle",
     "license": "MIT",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "authors": [
         {
             "name": "RichId",
@@ -16,16 +18,16 @@
         "issues": "https://github.com/rich-id/csv-generator-bundle/issues"
     },
     "require": {
-        "php": "^8.0",
-        "doctrine/orm": "^2.7",
+        "php": "^8.1",
+        "doctrine/orm": "^2.7 || ^3.0",
         "richcongress/bundle-toolbox": "*",
-        "symfony/http-foundation": "^5.4",
-        "symfony/serializer": "^5.4",
-        "symfony/translation": "^5.4"
+        "symfony/http-foundation": "^5.4 || ^6.0 || ^7.0",
+        "symfony/serializer": "^5.4 || ^6.0 || ^7.0",
+        "symfony/translation": "^5.4 || ^6.0 || ^7.0"
     },
     "require-dev": {
-        "richcongress/test-suite": "^0.1",
-        "infection/infection": "^0.20.2"
+        "richcongress/test-suite": "v0.2.x-dev",
+        "infection/infection": "^0.27"
     },
     "autoload": {
         "psr-4": {
@@ -40,6 +42,9 @@
     "config": {
         "bin-dir": "bin",
         "discard-changes": true,
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "infection/extension-installer": true
+        }
     }
 }

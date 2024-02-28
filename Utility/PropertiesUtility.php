@@ -2,8 +2,7 @@
 
 namespace RichId\CsvGeneratorBundle\Utility;
 
-use Doctrine\Common\Annotations\AnnotationReader;
-use RichId\CsvGeneratorBundle\Annotation\CsvContentTranslationPrefix;
+use RichId\CsvGeneratorBundle\Attribute\CsvContentTranslationPrefix;
 use RichId\CsvGeneratorBundle\Configuration\AbstractCsvGeneratorConfiguration;
 use RichId\CsvGeneratorBundle\Data\Property;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -18,8 +17,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 final class PropertiesUtility
 {
-    /** @var NormalizerInterface */
-    protected $normalizer;
+    protected NormalizerInterface $normalizer;
 
     public function __construct(NormalizerInterface $normalizer)
     {
@@ -55,27 +53,31 @@ final class PropertiesUtility
 
     public function getPropertiesWithContentTranslationPrefix(AbstractCsvGeneratorConfiguration $configuration): array
     {
-        $propertiesWithAnnotation = [];
-        $annotationReader = new AnnotationReader();
+        $propertiesWithAttribute = [];
         $properties = $this->getPropertiesForConfig($configuration);
 
         foreach ($properties as $property) {
-            $annotation = $annotationReader->getPropertyAnnotation($property->getReflectionProperty(), CsvContentTranslationPrefix::class);
+            $attribute = $property->getReflectionProperty()->getAttributes(CsvContentTranslationPrefix::class, \ReflectionAttribute::IS_INSTANCEOF)[0] ?? null;
+            $attribute = $attribute?->newInstance();
 
-            if (!$annotation instanceof CsvContentTranslationPrefix) {
+            if (!$attribute instanceof CsvContentTranslationPrefix) {
                 continue;
             }
 
-            $propertiesWithAnnotation[$property->getName()] = $annotation->translationPrefix;
+            $propertiesWithAttribute[$property->getName()] = $attribute->translationPrefix;
         }
 
-        return $propertiesWithAnnotation;
+        return $propertiesWithAttribute;
     }
 
     private function getPropertiesName(AbstractCsvGeneratorConfiguration $configuration, $object): array
     {
-        $context = empty($configuration->getSerializationGroups()) ? [] : [AbstractNormalizer::GROUPS => $configuration->getSerializationGroups()];
+        $context = [ObjectNormalizer::ALL_NULL_VALUES => true];
 
-        return array_keys($this->normalizer->normalize($object, null, $context));
+        if (!empty($configuration->getSerializationGroups())) {
+            $context[AbstractNormalizer::GROUPS] = $configuration->getSerializationGroups();
+        }
+
+        return \array_keys($this->normalizer->normalize($object, null, $context));
     }
 }

@@ -3,60 +3,34 @@
 namespace RichId\CsvGeneratorBundle\Tests\Resources\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use RichId\CsvGeneratorBundle\Annotation\CsvContentTranslationPrefix;
-use Symfony\Component\Serializer\Annotation\Groups;
+use RichId\CsvGeneratorBundle\Attribute\CsvContentTranslationPrefix;
+use Symfony\Component\Serializer\Attribute\Groups;
 
-/**
- * @ORM\Table("dummy_entity")
- * @ORM\Entity
- */
+#[ORM\Table('dummy_entity')]
+#[ORM\Entity]
 class DummyEntity
 {
-    /**
-     * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     *
-     * @Groups("my_serialization_group")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[Groups('my_serialization_group')]
+    private int $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=250, nullable=false, name="name")
-     *
-     * @Groups("my_serialization_group")
-     */
-    private $name;
+    #[ORM\Column(name: 'name', type: 'string', length: 250, nullable: false)]
+    #[Groups("my_serialization_group")]
+    private string $name;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=250, nullable=false, name="other")
-     *
-     * @Groups("my_serialization_group")
-     * @CsvContentTranslationPrefix("my_content_translation_prefix.")
-     */
-    private $other;
+    #[ORM\Column(name: 'other', type: 'string', length: 250, nullable: false)]
+    #[Groups('my_serialization_group')]
+    #[CsvContentTranslationPrefix('my_content_translation_prefix.')]
+    private string $other;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=250, nullable=false, name="title")
-     */
-    private $title;
+    #[ORM\Column(name: 'title', type: 'string', length: 250, nullable: false)]
+    private string $title;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=250, nullable=true, name="other_title")
-     *
-     * @CsvContentTranslationPrefix("my_content_translation_prefix.")
-     */
-    public $otherTitle;
+    #[ORM\Column(name: 'other_title', type: 'string', length: 250, nullable: true)]
+    #[CsvContentTranslationPrefix("my_content_translation_prefix.")]
+    public ?string $otherTitle;
 
     public static function build(int $id, string $name, string $other): DummyEntity
     {
