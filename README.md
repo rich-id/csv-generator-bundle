@@ -3,7 +3,7 @@
 Getting Started With RichIdCsvGeneratorBundle
 =======================================
 
-This version of the bundle requires Symfony 5.4+ and PHP 8.0+.
+This version of the bundle requires Symfony 6.0+ and PHP 8.1+.
 
 [![Package version](https://img.shields.io/packagist/v/rich-id/csv-generator-bundle)](https://packagist.org/packages/rich-id/csv-generator-bundle)
 [![Actions Status](https://github.com/rich-id/csv-generator-bundle/workflows/Tests/badge.svg)](https://github.com/t/rich-id/csv-generator-bundle/actions)
@@ -26,7 +26,7 @@ The csv-generator-bundle provide csv generation from model.
 
 # 1. Installation
 
-This version of the bundle requires Symfony 5.4+ and PHP 8.0+.
+This version of the bundle requires Symfony 6.0+ and PHP 8.1+.
 
 ```bash
 composer rich-id/csv-generator-bundle

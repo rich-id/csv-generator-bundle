@@ -1,4 +1,3 @@
-version: '3.7'
 services:
     application:
         container_name: csv_generator_bundle_app
