@@ -21,6 +21,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class CsvGenerator implements CsvGeneratorInterface
 {
+    private const UTF8_BOM = "\xEF\xBB\xBF";
+
     /** @var SerializerInterface */
     protected $serializer;
 
@@ -44,6 +46,10 @@ class CsvGenerator implements CsvGeneratorInterface
     public function getContent(AbstractCsvGeneratorConfiguration $configuration): string
     {
         $content = '';
+
+        if ($configuration->isWithUtf8Bom()) {
+            $content .= self::UTF8_BOM;
+        }
 
         if ($configuration->isWithHeader()) {
             $content .= $this->getHeaderContent($configuration);

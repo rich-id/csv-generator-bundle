@@ -32,6 +32,9 @@ abstract class AbstractCsvGeneratorConfiguration
     /** @var bool */
     protected $withHeader;
 
+    /** @var bool */
+    protected $withUtf8Bom;
+
     protected function __construct()
     {
     }
@@ -52,6 +55,7 @@ abstract class AbstractCsvGeneratorConfiguration
 
         return $this;
     }
+    private const UTF8_BOM = "\xEF\xBB\xBF";
 
     public function getSerializationGroups(): array
     {
@@ -106,6 +110,18 @@ abstract class AbstractCsvGeneratorConfiguration
         return $this->withHeader;
     }
 
+    public function setWithUtf8Bom(bool $withUtf8Bom): self
+    {
+        $this->withUtf8Bom = $withUtf8Bom;
+
+        return $this;
+    }
+
+    public function isWithUtf8Bom(): bool
+    {
+        return $this->withUtf8Bom;
+    }
+
     protected function initialize(string $class, iterable $objects): void
     {
         $this->class = $class;
@@ -115,5 +131,6 @@ abstract class AbstractCsvGeneratorConfiguration
         $this->objectTransformerCallback = null;
         $this->delimiter = ';';
         $this->withHeader = true;
+        $this->withUtf8Bom = true;
     }
 }
