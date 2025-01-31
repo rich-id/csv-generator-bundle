@@ -50,7 +50,7 @@ class ObjectNormalizer extends AbstractObjectNormalizer
         return null;
     }
 
-    protected function setAttributeValue(object $object, string $attribute, mixed $value, ?string $format = null, array $context = [])
+    protected function setAttributeValue(object $object, string $attribute, mixed $value, ?string $format = null, array $context = []): void
     {
     }
 
